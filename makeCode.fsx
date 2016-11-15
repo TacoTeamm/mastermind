@@ -107,6 +107,7 @@ validateCode makeList guessList
 printfn "Your guess resolved to - (White, Black) : %A" codeAnswer
 board1 <- ((guessList, codeAnswer) :: board1)
 
+<<<<<<< Updated upstream
 if makeList = guessList then
       Console.WriteLine "Congratulations, Champion! You succeeded in beating your incompetent opponent."
 else
@@ -121,3 +122,16 @@ for i = 0 to 9 do
        for i = (board1.Length-1) downto 0 do
           printfn "%A \t %A" (fst board1.[i]) (snd board1.[i])
           
+=======
+while not(makeList = guessList) do
+  for i = 0 to 9 do
+    if board1.Length < 9 then
+      Console.WriteLine "Sorry you lost! You didn't guess the code"
+      else guessCode guessPlayer
+        validateCode makeList guessList
+        board1 <- ((guessList, codeAnswer) :: board1)
+        Console.WriteLine "The board so far"
+        for i = (board1.Length - 1) downto 0 do
+            printfn "%A\n" board1.[i]
+Console.WriteLine "Congratz you won! You guessed the code"
+>>>>>>> Stashed changes
