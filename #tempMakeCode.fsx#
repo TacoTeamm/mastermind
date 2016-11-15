@@ -1,0 +1,36 @@
+open System
+
+type codeColor = Red | Green | Yellow | Purple | White | Black
+type code = codeColor list
+type answer = int * int
+type board = (code * answer) list
+type player = Human | Computer
+
+
+let stringToColor n =
+  match n with
+  | "Red" -> Red
+  | "Green" -> Green
+  | "Yellow" -> Yellow
+  | "Purple" -> Purple
+  | "White" -> White
+  | "Black" -> Black
+  | _ -> failwith "invalid color request try with:\nRed | Green | Yellow | Purple | White | Black"
+
+let stringToPlayer n =
+ match n with
+ | "Human" -> Human
+ | "Computer" -> Computer
+ | _ -> failwith "invalid player request try with: \nHuman | Computer"
+
+
+let mutable makeList = []
+let takeUserCombination =
+    let frst = stringToColor (Console.ReadLine())
+    Console.WriteLine "Request second color"
+    let scnd = stringToColor (Console.ReadLine())
+    Console.WriteLine "Request third color"
+    let thrd = stringToColor (Console.ReadLine())
+    Console.WriteLine "Request fourth color"
+    let frth = stringToColor (Console.ReadLine())
+    makeList <- frst :: scnd :: thrd :: frth :: []

@@ -24,6 +24,8 @@ let validateCode (tryCode : code) (trueCode : code) =
   printfn "Hvid : %A \nSort : %A" hvid sort
 validateCode makeCode guessCode
 
+
+
 (*
 let mutable (codeAnswer : answer) = (0, 0)
 let mutable (bord : board) = []

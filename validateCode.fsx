@@ -9,20 +9,21 @@ type player = Human | Computer
 let (makeCode : code) = [Red; Green; Yellow; Purple]
 let (guessCode : code) = [Green; Green; Green; Purple]
 
-let validateCode (tryCode : code) (trueCode : code) =
-  let mutable (hvid: int) = 0
-  for i = 0 to (tryCode.Length - 1) do
-    if List.contains tryCode.[i] trueCode then
-        hvid <- hvid + 1
-  printfn "temphvid %A" hvid
-  let mutable (sort: int) = 0
-  if hvid > 0 then
-      for i = 0 to (tryCode.Length - 1) do
-          if tryCode.[i] = trueCode.[i] then
-              hvid <- hvid - 1
-              sort <- sort + 1
-  printfn "Hvid : %A \nSort : %A" hvid sort
-validateCode makeCode guessCode
+module validation = 
+  let validateCode (tryCode : code) (trueCode : code) =
+    let mutable (hvid: int) = 0
+    for i = 0 to (tryCode.Length - 1) do
+        if List.contains tryCode.[i] trueCode then
+            hvid <- hvid + 1
+    printfn "temphvid %A" hvid
+    let mutable (sort: int) = 0
+    if hvid > 0 then
+        for i = 0 to (tryCode.Length - 1) do
+            if tryCode.[i] = trueCode.[i] then
+                hvid <- hvid - 1
+                sort <- sort + 1
+    printfn "Hvid : %A \nSort : %A" hvid sort
+  validateCode makeCode guessCode
 
 
 
