@@ -1,0 +1,132 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage{program}
+\usepackage{graphicx}
+\usepackage[T1]{fontenc}
+\usepackage{eso-pic}
+\usepackage{gensymb}
+\usepackage{listings}
+\usepackage{float}
+\usepackage{upquote}
+\usepackage{color}
+\definecolor{bluekeywords}{rgb}{0.13,0.13,1}
+\definecolor{greencomments}{rgb}{0,0.5,0}
+\definecolor{redstrings}{rgb}{0.9,0,0}
+
+
+\newcommand{\BackgroundPic}{\put(-4,0){\parbox[b][\paperheight]{\paperwidth}{\centering\includegraphics[width=\paperwidth,height=\paperheight]{nat-farve.pdf}}}}
+
+\lstdefinelanguage{FSharp}
+    {morekeywords={let, new, match, with, rec, open, module, namespace, type, of, member, % 
+        and, for, while, true, false, in, do, begin, end, fun, function, return, yield, try, %
+        mutable, if, then, else, cloud, async, static, use, abstract, interface, inherit, finally},
+    otherkeywords={ let!, return!, do!, yield!, use!, var, from, select, where, order, by, None, Some},
+    keywordstyle=\color{bluekeywords},
+    sensitive=true,
+	    breaklines=true,
+    xleftmargin=\parindent,
+    tabsize=4,
+    morecomment=[l][\color{greencomments}]{///},
+    morecomment=[l][\color{greencomments}]{//},
+    morecomment=[s][\color{greencomments}]{{(*}{*)}},
+    morestring=[b]",
+    stringstyle=\color{redstrings}
+    }
+
+\lstnewenvironment{fslisting}
+    {\lstset{language=FSharp,
+                basicstyle=\ttfamily,
+                breaklines=true,
+                columns=fullflexible
+    }}
+    {}
+
+\algnewcommand\True{\texttt{true}\space}
+\algnewcommand\False{\texttt{false}\space}
+\algdef{SE}[SUBALG]{Indent}{EndIndent}{}{\algorithmicend\ }%
+\algtext*{Indent}
+\algtext*{EndIndent}
+
+\begin{document} 
+	\AddToShipoutPicture*{\BackgroundPic}
+	
+	\begin{titlepage}
+		\thispagestyle{empty}
+		\vspace*{5cm}
+		\begin{center}
+			\Huge \textbf{Programmering og Problemløsning} \\
+			\LARGE \textbf{Aflevering 8g - Mastermind} \\
+		\end{center}
+		\vspace*{3.5cm}
+		\begin{flushleft}
+			
+		\begin{table}[h!]
+			\begin{tabular}{lll}
+				Adam Ingwersen,& \\
+				Aske Fjellerup,& \\
+				Peter Friborg\\
+			\end{tabular}
+		\end{table}
+			
+			
+			\vspace{3mm}
+			\vspace{3mm}
+			Datalogisk  Institut\\
+			Københavns Universitet\\
+			\vspace{3mm}
+			\today\\
+			%\vspace*{0.5cm}
+			
+		\end{flushleft}
+	\end{titlepage}
+
+	\title{8i}
+	\author{AAP}
+	
+	\newpage
+
+\newpage
+
+\section{Forord}
+
+\section{Introduktion}
+
+Spillet Mastermind fra 1970 er et kodeløsnings-spil, som beskæftiger to spillere; en kodestiller og kodeløser. Kodestillerens opgave er at vælge en kombination af 4 ud af 6 mulige farvede brikker, som kan opstilles i en vilkårlig rækkefølge. Hertil skal kødeløseren forsøge at gætte den præcise kombination ved brug af højest 10 gæt. Kodestilleren skal for hvert gæt indikere korrektheden af gættet - dette ved at anføre en hvid brik, hvis farven eksisterer i kodestillerens kode og en sort brik, hvis farven og positionen er korrekt. Denne spilkonstruktion vil vi i denne rapport forsøge at implementere digitalt. 
+
+\section{Problemformulering}
+
+Målet for denne rapport er at implementere spillet Mastermind ved anvendelse af funktionelle- samt imperative programmeringsteknikker i \textbf{F\#}. Spillet skal kunne spilles i fire versioner, hvor der varieres mellem problemstiller/problemløser, begge roller skal kunne spilles af menneske hhv. computer i samtlige kombinationer. Spillet skal kunne spilles i en terminal - altså uden grafisk brugergrænseflade. Med dette i mente, lægges der vægt på at konstruere en intuitiv og let brugerinteraktion. 
+
+\section{Problemanalyse \& Design}
+
+\section{Programbeskrivelse}
+
+\section{Afprøvning}
+
+\section{Diskussion og konklusion}
+
+\section*{Bilag}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
