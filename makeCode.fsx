@@ -8,12 +8,12 @@ type player = Human | Computer
 
 let stringToColor n =
   match n with
-  | "Red" -> Red
-  | "Green" -> Green
-  | "Yellow" -> Yellow
-  | "Purple" -> Purple
-  | "White" -> White
-  | "Black" -> Black
+  | ("Red"|"red"|"r") -> Red
+  | ("Green"|"green"|"g") -> Green
+  | ("Yellow"|"yellow"|"y") -> Yellow
+  | ("Purple"|"purple"|"p") -> Purple
+  | ("White"|"white"|"w") -> White
+  | ("Black"|"black"|"b") -> Black
   | _ -> failwith "invalid color request try with:\nRed | Green | Yellow | Purple | White | Black"
 
 let stringToPlayer n =
@@ -32,7 +32,7 @@ let mutable makeList = []
 let makeCode player =
   let mutable (codeColorList : code) = [Red; Green; Yellow; Purple; White; Black]
   match player with
-  | Human -> Console.WriteLine "Colors have to be typed in and should be one of the following: \nRed | Green | Yellow | Purple | White | Black \nPick a color for the 1st slot:"
+  | Human -> Console.WriteLine "Colors have to be typed in and should be one of the following: \nRed | Green | Yellow | Purple | White | Black \nYou can type like: Red or red even r\nPick a color for the 1st slot:"
              let frst = stringToColor (Console.ReadLine())
              Console.WriteLine "Pick a color for the 2nd slot:"
              let scnd = stringToColor (Console.ReadLine())
