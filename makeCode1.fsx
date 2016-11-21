@@ -55,6 +55,7 @@ printfn "Who wants to be the CODE-MAKER?\nHuman | Computer"
 let (makePlayer : player) = stringToPlayer (Console.ReadLine())
 makeCode makePlayer
 printfn "%A" makeList
+
 Console.Clear()
 
 let mutable guessList = []
@@ -63,18 +64,18 @@ let guessCode player =
             [Red; Green; Yellow; Purple; White; Black]
   match player with
   | Human -> Console.WriteLine "Colors have to be typed in and should be one of the following: \nRed | Green | Yellow | Purple | White | Black \nPick a color for the 1st slot:"
-             let frst = stringToColor (Console.ReadLine())
+             (*let frst = stringToColor (Console.ReadLine())
              Console.WriteLine "Pick a color for the 2nd slot:"
              let scnd = stringToColor (Console.ReadLine())
              Console.WriteLine "Pick a color for the 3rd slot:"
              let thrd = stringToColor (Console.ReadLine())
              Console.WriteLine "Pick a color for the 4th slot:"
              let frth = stringToColor (Console.ReadLine())
-             guessList <- frst :: scnd :: thrd :: frth :: []
-             (*guessList <- []
-             for i=1 to 4 do  printfn "Pick a color for slot number %A:" i
-                              guessList <- (stringToColor (Console.ReadLine()) :: guessList
-             guessList <- (List.rev guessList)*)
+             guessList <- frst :: scnd :: thrd :: frth :: []*)
+             guessList <- []
+             for i=1 to 4 do
+                  printfn "Pick a color for slot number %A:" i
+                  guessList <- (stringToColor (Console.ReadLine()) :: []) @ guessList
   | Computer -> Console.WriteLine "Computer has decided upon a random guess combination"
                 let mutable nmbr = 0
                 let rnd = System.Random()
@@ -88,33 +89,54 @@ let guessCode player =
   (*| _ -> failwith "Invalid player"*)
 printfn "Who wants to be the CODE-GUESSER?\nHuman | Computer"
 let (guessPlayer : player) = stringToPlayer (Console.ReadLine())
-
+guessCode guessPlayer
 
 (*let mutable (codeAnswer : answer) = (0, 0)*)
 let mutable (board1 : board) = []
-let rec validateCode (tryCode : code) (trueCode : code) (H: int) (S: int) =
+let rec validateCode tryCode trueCode H S=
   match tryCode with
   | [] -> (H,S)
-  |x::xs when x = trueCode.[(4 - (tryCode.Length))] ->  (validateCode xs trueCode H (S+1))
-  |x::xs when List.contains x trueCode ->  (validateCode xs trueCode (H+1) S)
+  |x::xs when x = trueCode.[(4-trycode.length)] ->  (validateCode xs trueCode H (S+1))
+  |x::xs when List.contains x truecode ->  (validateCode xs trueCode (H+1) S)
   |x::xs -> (validateCode xs trueCode H S)
+(*let validateCode (tryCode : code) (trueCode : code) =
+  let mutable (hvid: int) = 0
+  for i = 0 to (tryCode.Length - 1) do
+    if List.contains tryCode.[i] trueCode then
+       hvid <- hvid + 1
+  let mutable (sort: int) = 0
+  if hvid > 0 then
+     for i = 0 to (tryCode.Length - 1) do
+        if tryCode.[i] = trueCode.[i] then
+           hvid <- hvid - 1
+           sort <- sort + 1
+  printfn "Your guess : %A" guessList
+  codeAnswer <- (hvid, sort)*)
 
-let rec playGame guess =
-  Console.Clear()
-  let Val = (validateCode makeList guessList 0 0)
-  printfn "Your guess resolved to - (White, Black) : %A\n" Val
-  board1 <- ((guessList, Val) :: board1)
-  Console.WriteLine "The board so far"
-  printfn "+-----------------------------------------+"
-  for i = (board1.Length - 1) downto 0 do
-      printfn "|%A\t|%A\t|%A\t|%A\t| | %A|"
-              ((fst board1.[i]).[0]) ((fst board1.[i]).[1])
-              ((fst board1.[i]).[2]) ((fst board1.[i]).[3])
-              (snd board1.[i])
-  printfn "+-----------------------------------------+"
-  match (Val, board1.Length) with
-  | ((0,4),_) -> Console.WriteLine "Congratulations, Champion! You succeeded in beating your incompetent opponent."
-  | (_,10) -> Console.WriteLine "Sorry you lost! You didn't guess the code. Mordecai Meirowitzkl does not approve!"
-              printfn "The true code was: %A" makeList
-  | _ ->  playGame (guessCode guessPlayer)
-playGame (guessCode guessPlayer)
+printfn "Your guess resolved to - (White, Black) : %A" (validateCode makeList guessList 0 0)
+board1 <- ((guessList, (validateCode makeList guessList 0 0)) :: board1)
+
+(*while (makeList <> guessList) do
+        if board1.Length = 10 then
+           Console.WriteLine "Sorry you lost! You didn't guess the code. Mordecai Meirowitzkl does not approve!"
+           printfn "The true code was: %A" makeList
+        else  guessCode guessPlayer
+              validateCode makeList guessList
+              board1 <- ((guessList, codeAnswer) :: board1)
+              Console.WriteLine "The board so far"
+              for i = (board1.Length-1) downto 0 do
+                  printfn "%A \t \t %A" (fst board1.[i]) (snd board1.[i])
+if makeList = guessList then
+      Console.WriteLine "Congratulations, Champion! You succeeded in beating your incompetent opponent."*)
+
+
+
+let rec playGame  =
+  match i with
+  | 10 -> printfn "Fejl"
+  | _ ->  guessCode guessPlayer
+          (*validateCode makeList guessList*)
+          board1 <- ((guessList, (validateCode makeList guessList 0 0)) :: board1)
+          Console.WriteLine "The board so far"
+          for i = (board1.Length - 1) downto 0 do
+              printfn "%A \t \t %A" (fst board1.[i]) (snd board1.[i])
