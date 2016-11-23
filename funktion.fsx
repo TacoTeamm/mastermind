@@ -14,22 +14,36 @@ type player = Human | Computer
 /// <returns> codeColor, we want to return a codeColor, so we can make our (code: codeColor list) </returns>
 let stringToColor sColor =
   match sColor with
-  | ("Red"|"red"|"r") -> Red
-  | ("Green"|"green"|"g") -> Green
-  | ("Yellow"|"yellow"|"y") -> Yellow
-  | ("Purple"|"purple"|"p") -> Purple
-  | ("White"|"white"|"w") -> White
-  | ("Black"|"black"|"b") -> Black
-  | _ -> failwith "invalid color request try with:\nRed | Green | Yellow | Purple | White | Black"
+  | ("Red"|"red"|"r") -> Some(Red)
+  | ("Green"|"green"|"g") -> Some(Green)
+  | ("Yellow"|"yellow"|"y") -> Some(Yellow)
+  | ("Purple"|"purple"|"p") -> Some(Purple)
+  | ("White"|"white"|"w") -> Some(White)
+  | ("Black"|"black"|"b") -> Some(Black)
+  | ("exit"|"Exit") -> (exit 1)
+  | _ -> None
 
 /// <summary> Collects a string and return Player. </summary>
 /// <param name = "sPlayer"> Takes a string, using: Console.ReadLine() </param>
 /// <returns> Player, we want to return a Player, so we know who should make the color combination. </returns>
 let stringToPlayer sPlayer =
  match sPlayer with
- | ("Human"|"human"|"h") -> Human
- | ("Computer"|"computer"|"c") -> Computer
- | _ -> failwith "invalid player request try with: \nHuman | Computer"
+ | ("Human"|"human"|"h") -> Some(Human)
+ | ("Computer"|"computer"|"c") -> Some(Computer)
+ | ("exit"|"Exit") -> (exit 1)
+ | _ -> None
+
+let rec checkStringColor consoleString =
+    match stringToColor consoleString with
+    |Some c -> c
+    |None -> printfn "%s is not a legal command\nTry with\nRed|red|r" consoleString
+             checkStringColor (Console.ReadLine())
+
+let rec checkStringPlayer consoleString =
+    match stringToPlayer consoleString with
+    |Some p -> p
+    |None -> printfn "%s is not a legal command\nTry with\nHuman|human|h" consoleString
+             checkStringPlayer (Console.ReadLine())
 
 /// <summary> Removes one element from the list, so we don't get any dublicates. </summary>
 /// <param name = "color"> This is the color,  </param>
@@ -46,13 +60,13 @@ let makeCode player =
   let mutable makeList = []
   match player with
   | Human -> Console.WriteLine "Colors have to be typed in and should be one of the following: \nRed | Green | Yellow | Purple | White | Black \nYou can type like: Red or red even r\nPick a color for the 1st slot:"
-             let frst = stringToColor (Console.ReadLine())
+             let frst = checkStringColor (Console.ReadLine())
              Console.WriteLine "Pick a color for the 2nd slot:"
-             let scnd = stringToColor (Console.ReadLine())
+             let scnd = checkStringColor (Console.ReadLine())
              Console.WriteLine "Pick a color for the 3rd slot:"
-             let thrd = stringToColor (Console.ReadLine())
+             let thrd = checkStringColor (Console.ReadLine())
              Console.WriteLine "Pick a color for the 4th slot:"
-             let frth = stringToColor (Console.ReadLine())
+             let frth = checkStringColor (Console.ReadLine())
              makeList <- frst :: scnd :: thrd :: frth :: []
              makeList
   | Computer -> Console.WriteLine "Computer has decided upon a combination"
@@ -89,13 +103,13 @@ let boardOutlook (consoleBoard: board) =
 
 let firstRound n =
       if n = 0 then
-          printfn "Who wants to be the CODE-MAKER?\nHuman | Computer"
-          codeMaker <- stringToPlayer (Console.ReadLine())
+          Console.WriteLine "Who wants to be the CODE-MAKER?\nHuman | Computer"
+          codeMaker <- checkStringPlayer (Console.ReadLine())
           trueList <- makeCode codeMaker
           printfn "%A" trueList
           Console.Clear()
-          printfn "Who wants to be the CODE-GUESSER?\nHuman | Computer"
-          codeGuesser <- stringToPlayer (Console.ReadLine())
+          Console.WriteLine "Who wants to be the CODE-GUESSER?\nHuman | Computer"
+          codeGuesser <- checkStringPlayer (Console.ReadLine())
 
 let rec playGame n =
   firstRound n
