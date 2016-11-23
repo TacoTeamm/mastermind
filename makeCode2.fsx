@@ -30,7 +30,7 @@ let stringToPlayer sPlayer =
  | ("Computer"|"computer"|"c") -> Computer
 
 
-(*let checkString consoleString =
+(*let checkString consoleString=
   match ((stringToColor|stringToPlayer) consoleString) with
   |Some c -> c
   |None   -> printfn "%s is not a legal command" consoleString
@@ -112,5 +112,4 @@ let rec playGame guess =
   | (_,10) -> Console.WriteLine "Sorry you lost! You didn't guess the code. Mordecai Meirowitzkl does not approve!"
               printfn "The true code was: %A" trueList
   | _ ->  playGame (makeCode guessPlayer guessList)
-  guessList <-
 playGame (makeCode guessPlayer guessList)

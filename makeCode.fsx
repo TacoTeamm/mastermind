@@ -1,13 +1,19 @@
+/// <summary> Mastermind </summary>
+/// <summary> This .fsx file contains the code for the game called Mastermind. </summary>
 open System
 
+/// <remarks> Creates the different types, which we are going to use in this program. </remarks>
 type codeColor = Red | Green | Yellow | Purple | White | Black
 type code = codeColor list
-type answer = int * int
+type answer = int * int /// <remarks> White * Black </remarks>
 type board = (code * answer) list
 type player = Human | Computer
 
-let stringToColor n =
-  match n with
+/// <summary> Collects a string and return codeColor. </summary>
+/// <param name = "sColor"> Takes a string, using: Console.ReadLine()  </param>
+/// <returns> codeColor, we want to return a codeColor, so we can make our (code: codeColor list) </returns>
+let stringToColor sColor =
+  match sColor with
   | ("Red"|"red"|"r") -> Red
   | ("Green"|"green"|"g") -> Green
   | ("Yellow"|"yellow"|"y") -> Yellow
@@ -16,17 +22,25 @@ let stringToColor n =
   | ("Black"|"black"|"b") -> Black
   | _ -> failwith "invalid color request try with:\nRed | Green | Yellow | Purple | White | Black"
 
-let stringToPlayer n =
- match n with
- | "Human" -> Human
- | "Computer" -> Computer
+/// <summary> Collects a string and return Player. </summary>
+/// <param name = "sPlayer"> Takes a string, using: Console.ReadLine() </param>
+/// <returns> Player, we want to return a Player, so we know who should make the color combination. </returns>
+let stringToPlayer sPlayer =
+ match sPlayer with
+ | ("Human"|"human"|"h") -> Human
+ | ("Computer"|"computer"|"c") -> Computer
  | _ -> failwith "invalid player request try with: \nHuman | Computer"
 
-let rec listRemove i l =
-    match i, l with
+/// <summary> Removes one element from the list, so we don't get any dublicates. </summary>
+/// <param name = "color"> This is the color,  </param>
+/// <param name = "list"> Takes a string, using: Console.ReadLine() </param>
+/// <returns> Player, we want to return a Player, so we know who should make the color combination. </returns>
+let rec listRemove color list =
+    match color, list with
     | 0, x::xs -> xs
     | i, x::xs -> x::listRemove (i - 1) xs
     | i, [] -> failwith "index out of range"
+
 
 let mutable makeList = []
 let makeCode player =
@@ -90,14 +104,14 @@ printfn "Who wants to be the CODE-GUESSER?\nHuman | Computer"
 let (guessPlayer : player) = stringToPlayer (Console.ReadLine())
 
 
-(*let mutable (codeAnswer : answer) = (0, 0)*)
+
 let mutable (board1 : board) = []
-let rec validateCode (tryCode : code) (trueCode : code) (H: int) (S: int) =
+let rec validateCode (tryCode : code) (trueCode : code) (white: int) (black: int) =
   match tryCode with
-  | [] -> (H,S)
-  |x::xs when x = trueCode.[(4 - (tryCode.Length))] ->  (validateCode xs trueCode H (S+1))
-  |x::xs when List.contains x trueCode ->  (validateCode xs trueCode (H+1) S)
-  |x::xs -> (validateCode xs trueCode H S)
+  | [] -> (white, black)
+  |x::xs when x = trueCode.[(4 - (tryCode.Length))] ->  (validateCode xs trueCode white (black + 1))
+  |x::xs when List.contains x trueCode ->  (validateCode xs trueCode (white + 1) black)
+  |x::xs -> (validateCode xs trueCode white black)
 
 let rec playGame guess =
   Console.Clear()
