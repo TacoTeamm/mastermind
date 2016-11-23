@@ -9,9 +9,10 @@ type answer = int * int /// <remarks> White * Black </remarks>
 type board = (code * answer) list
 type player = Human | Computer
 
-/// <summary> Collects a string and return codeColor. </summary>
+/// <summary> Collects a string and return Some(codeColor). </summary>
 /// <param name = "sColor"> Takes a string, using: Console.ReadLine()  </param>
-/// <returns> codeColor, we want to return a codeColor, so we can make our (code: codeColor list) </returns>
+/// <returns> Some(codeColor), we want to return a codeColor, so we can make our (code: codeColor list) </returns>
+/// <remarks> There is also the command to terminate the program. </remarks>
 let stringToColor sColor =
   match sColor with
   | ("Red"|"red"|"r") -> Some(Red)
@@ -23,9 +24,10 @@ let stringToColor sColor =
   | ("exit"|"Exit") -> (exit 1)
   | _ -> None
 
-/// <summary> Collects a string and return Player. </summary>
+/// <summary> Collects a string and return Some(Player). </summary>
 /// <param name = "sPlayer"> Takes a string, using: Console.ReadLine() </param>
-/// <returns> Player, we want to return a Player, so we know who should make the color combination. </returns>
+/// <returns> Some(Player) - we want to return a Some(Player). </returns>
+/// <remarks> There is also the command to terminate the program. </remarks>
 let stringToPlayer sPlayer =
  match sPlayer with
  | ("Human"|"human"|"h") -> Some(Human)
@@ -33,12 +35,20 @@ let stringToPlayer sPlayer =
  | ("exit"|"Exit") -> (exit 1)
  | _ -> None
 
+/// <summary> Collects Some(codeColor), and checks whether the command is allowed. </summary>
+/// <param name = "consoleString"> Takes a string, using: Console.ReadLine(), and matches with stringToColor. </param>
+/// <returns> codeColor </returns>
+/// <remarks> This funktion was needed, so we didn't have to throw an exception, if any mistyping. </remarks>
 let rec checkStringColor consoleString =
     match stringToColor consoleString with
     |Some c -> c
     |None -> printfn "%s is not a legal command\nTry with\nRed|red|r" consoleString
              checkStringColor (Console.ReadLine())
 
+/// <summary> Collects Some(player), and checks whether the command is allowed. </summary>
+/// <param name = "consoleString"> Takes a string, using: Console.ReadLine(), and matches with stringToPlayer. </param>
+/// <returns> player - we want to return a player, so we know who should make the color combination. </returns>
+/// <remarks> This funktion was needed, so we didn't have to throw an exception, if any mistyping. </remarks>
 let rec checkStringPlayer consoleString =
     match stringToPlayer consoleString with
     |Some p -> p
@@ -48,13 +58,17 @@ let rec checkStringPlayer consoleString =
 /// <summary> Removes one element from the list, so we don't get any dublicates. </summary>
 /// <param name = "color"> This is the color,  </param>
 /// <param name = "list"> Takes a string, using: Console.ReadLine() </param>
-/// <returns> Player, we want to return a Player, so we know who should make the color combination. </returns>
+/// <returns> The initial list, but without the specified color. </returns>
 let rec listRemove color list =
     match color, list with
     | 0, x::xs -> xs
     | i, x::xs -> x::listRemove (i - 1) xs
     | i, [] -> failwith "index out of range"
 
+/// <summary> makeCode, This funktion is used make the different codes, both the codeGuessers and codeMakers. </summary>
+/// <param name = "player"> This is the color,  </param>
+/// <param name = "list"> Takes a string, using: Console.ReadLine() </param>
+/// <returns> Player, we want to return a Player, so we know who should make the color combination. </returns>
 let makeCode player =
   let mutable (codeColorList : code) = [Red; Green; Yellow; Purple; White; Black]
   let mutable makeList = []
