@@ -42,7 +42,7 @@ let mutable (theCode : code) = []
 let mutable (theGuess : code) = []
 
 let interaction x =
-    printfn "Pick a number for slot : %i" x
+    printfn "Pick a color for slot : %i" x
     stringToColor (Console.ReadLine())
 
 let randomizer (x : int) =
