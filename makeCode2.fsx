@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream:makeCode2.fsx
 /// <summary> Mastermind </summary>
 /// <summary> This .fsx file contains the code for the game called Mastermind. </summary>
 open System
@@ -113,3 +114,19 @@ let rec playGame guess =
               printfn "The true code was: %A" trueList
   | _ ->  playGame (makeCode guessPlayer guessList)
 playGame (makeCode guessPlayer guessList)
+=======
+let mutable x = ["hej"; "hej2"]
+
+let mutable y = ["bye"; "bye"]
+
+
+let func lizzy =
+    let mutable lizzy = lizzy
+    lizzy <- []
+    lizzy @ ["hej3"]
+
+printfn "%A %A" (func x) (func y)
+
+
+
+>>>>>>> Stashed changes:#testmodule.fsx#
