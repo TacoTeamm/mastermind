@@ -51,7 +51,6 @@ let playerPrompt = "Colors have to be typed in and should be one of the followin
 let computerPrompt = "Computer has decided upon a combination"
                                                                                               
 let guessLength = 4
-let mutable (theCode : code) = []
 let mutable (theGuess : code) = []
 
 let interaction x =
@@ -70,10 +69,9 @@ let randomizer (x : int) =
         colorPossibilities <- listRemove counter colorPossibilities
         imax <- imax - 1
     sample
-
 let createPlayerCode (iterations : int) =
-    let arr = [1..iterations]
-    theGuess  <- arr |> List.map interaction
+    let lst = [1..iterations]
+    theGuess  <- lst |> List.map interaction
     printfn "%A" theGuess
 
 let createComputerCode (iterations : int) =
@@ -91,8 +89,9 @@ let makeCode player =
 printfn "Who wants to be the CODE-MAKER?\nHuman | Computer"
 let (playerOne : player) = checkStringPlayer (Console.ReadLine())
 makeCode playerOne
-theCode <- theGuess
+let (theCode : code) = theGuess
 Console.Clear()
+
 
 printfn "Who wants to be the CODE-GUESSER?\nHuman | Computer"
 let (playerTwo : player) = checkStringPlayer (Console.ReadLine())
