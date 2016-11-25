@@ -8,22 +8,35 @@ type board = (code * answer) list
 type player = Human | Computer
 
 /// <summary> Transforms user text/string input to type codeColor </summary>
-let stringToColor n =
-  match n with
-  | ("Red"|"red"|"r") -> Red
-  | ("Green"|"green"|"g") -> Green
-  | ("Yellow"|"yellow"|"y") -> Yellow
-  | ("Purple"|"purple"|"p") -> Purple
-  | ("White"|"white"|"w") -> White
-  | ("Black"|"black"|"b") -> Black
-  | _ -> failwith "invalid color request try with:\nRed | Green | Yellow | Purple | White | Black"
-
+let stringToColor sColor =
+  match sColor with
+  | ("Red"|"red"|"r") -> Some(Red)
+  | ("Green"|"green"|"g") -> Some(Green)
+  | ("Yellow"|"yellow"|"y") -> Some(Yellow)
+  | ("Purple"|"purple"|"p") -> Some(Purple)
+  | ("White"|"white"|"w") -> Some(White)
+  | ("Black"|"black"|"b") -> Some(Black)
+  | ("exit"|"Exit") -> (exit 1)
+  | _ -> None
 /// <summary> Transforms user text/string input to type player </summary>
-let stringToPlayer n =
- match n with
- | "Human" -> Human
- | "Computer" -> Computer
- | _ -> failwith "invalid player request try with: \nHuman | Computer"
+let stringToPlayer sPlayer =
+ match sPlayer with
+ | ("Human"|"human"|"h") -> Some(Human)
+ | ("Computer"|"computer"|"c") -> Some(Computer)
+ | ("exit"|"Exit") -> (exit 1)
+ | _ -> None
+
+let rec checkStringColor consoleString =
+    match stringToColor consoleString with
+    |Some c -> c
+    |None -> printfn "%s is not a legal command\nTry with\nRed|red|r" consoleString
+             checkStringColor (Console.ReadLine())
+
+let rec checkStringPlayer consoleString =
+    match stringToPlayer consoleString with
+    |Some p -> p
+    |None -> printfn "%s is not a legal command\nTry with\nHuman|human|h" consoleString
+             checkStringPlayer (Console.ReadLine())
 
 /// <summary> listRemove : helper-function </summary>
 let rec listRemove i l =
@@ -43,7 +56,7 @@ let mutable (theGuess : code) = []
 
 let interaction x =
     printfn "Pick a color for slot : %i" x
-    stringToColor (Console.ReadLine())
+    checkStringColor (Console.ReadLine())
 
 let randomizer (x : int) =
     let mutable (colorPossibilities : code) = [Red; Green; Yellow; Purple; White; Black]
@@ -59,8 +72,8 @@ let randomizer (x : int) =
     sample
 
 let createPlayerCode (iterations : int) =
-    let fix = [1..iterations]
-    theGuess  <- fix |> List.map interaction
+    let arr = [1..iterations]
+    theGuess  <- arr |> List.map interaction
     printfn "%A" theGuess
 
 let createComputerCode (iterations : int) =
@@ -76,21 +89,21 @@ let makeCode player =
                   createComputerCode guessLength
                   
 printfn "Who wants to be the CODE-MAKER?\nHuman | Computer"
-let (playerOne : player) = stringToPlayer (Console.ReadLine())
+let (playerOne : player) = checkStringPlayer (Console.ReadLine())
 makeCode playerOne
 theCode <- theGuess
 Console.Clear()
 
 printfn "Who wants to be the CODE-GUESSER?\nHuman | Computer"
-let (playerTwo : player) = stringToPlayer (Console.ReadLine())
+let (playerTwo : player) = checkStringPlayer (Console.ReadLine())
 
 let mutable (board1 : board) = []
-let rec validateCode (tryCode : code) (trueCode : code) (H: int) (S: int) =
+let rec validateCode (tryCode : code) (trueCode : code) (white: int) (black: int) =
   match tryCode with
-  | [] -> (H,S)
-  |x::xs when x = trueCode.[(4 - (tryCode.Length))] ->  (validateCode xs trueCode H (S+1))
-  |x::xs when List.contains x trueCode ->  (validateCode xs trueCode (H+1) S)
-  |x::xs -> (validateCode xs trueCode H S)
+  | [] -> (white, black)
+  |x::xs when x = trueCode.[(4 - (tryCode.Length))] ->  (validateCode xs trueCode white (black + 1))
+  |x::xs when List.contains x trueCode ->  (validateCode xs trueCode (white + 1) black)
+  |x::xs -> (validateCode xs trueCode white black)
 
 let rec playGame guess =
   Console.Clear()
