@@ -85,9 +85,9 @@ let rec listRemove i l =
 let playerPrompt = "Colors have to be typed in and should be one of the following: \nRed | Green | Yellow | Purple | White | Black \nYou can type like: Red or red even r\n"
 let computerPrompt = "Computer has decided upon a combination"
 
-/// <summary> Set board-width - the number of colors in the code </summary>                                                                                              
+/// <summary> Set board-width - the number of colors in the code </summary>
 let guessLength = 4
-/// <summary> A mutable variable for storing temporary guesses </summary> 
+/// <summary> A mutable variable for storing temporary guesses </summary>
 let mutable (theGuess : code) = []
 
 /// <summary> A function, which prompts the player and takes input </summary>
@@ -123,7 +123,7 @@ let randomizer (x : int) =
 /// <summary> A function, which utilizes interaction to map each iteration into a mutable list </summary>
 /// <remarks> Also prints the finished list of colors chosen by the player. </remarks>
 /// <remarks> USED BY FUNCTION : "makecode" </remarks>
-/// <param name = "iterations"> Number of guesses to be provided by player. </param> 
+/// <param name = "iterations"> Number of guesses to be provided by player. </param>
 /// <returns> Returns each guess appended to a mutable list 'theGuess' </returns>
 let createPlayerCode (iterations : int) =
     let lst = [1..iterations]
@@ -151,7 +151,12 @@ let makeCode player =
     | Computer -> Console.WriteLine computerPrompt
                   createComputerCode guessLength
 
-let mutable (board1 : board) = []
+/// <summary> Recursive function that compares two codes with each other, and returns the answer </summary>
+/// <param name = "tryCode"> This is the code which should be compared, it is the guess. </param>
+/// <param name = "trueCode"> This is the code to be compared with, it is the first code made. </param>
+/// <param name = "white"> this is a recursive function, thus we need to define whites in the call. </param>
+/// <param name = "black"> this is a recursive function, thus we need to define blacks in the call. </param>
+/// <returns> a tuple of int: containing Whites first and then Black. </returns>
 let rec validateCode (tryCode : code) (trueCode : code) (white: int) (black: int) =
   match tryCode with
   | [] -> (white, black)
@@ -159,24 +164,29 @@ let rec validateCode (tryCode : code) (trueCode : code) (white: int) (black: int
   |x::xs when List.contains x trueCode ->  (validateCode xs trueCode (white + 1) black)
   |x::xs -> (validateCode xs trueCode white black)
 
+/// <summary> Difines the board which should be printed to the console.  </summary>
+let mutable (board1 : board) = []
+/// <summary> Recursive function that plays the game, when called with  </summary>
+/// <param name = "guess"> This part maked the new theGuess, which should be compared to theCode </param>
+/// <returns> a string: Which tells you whether you lose or win. </returns>
 let rec playGame guess =
   Console.Clear()
-  let Val = (validateCode theCode theGuess 0 0)
+  let Val = (validateCode theCode theGuess 0 0) /// <remarks> Defines the answer, to be added to the board. </remarks>
   printfn "Your guess resolved to - (White, Black) : %A\n" Val
   board1 <- ((theGuess, Val) :: board1)
   Console.WriteLine "The board so far"
   printfn "+-----------------------------------------+"
   for i = (board1.Length - 1) downto 0 do
-      printfn "|%A\t|%A\t|%A\t|%A\t| | %A|"
+      printfn "|%A\t|%A\t|%A\t|%A\t| | %A|" /// <remarks> This is the outlook of the board. </remarks>
               ((fst board1.[i]).[0]) ((fst board1.[i]).[1])
               ((fst board1.[i]).[2]) ((fst board1.[i]).[3])
               (snd board1.[i])
   printfn "+-----------------------------------------+"
-  match (Val, board1.Length) with
+  match (Val, board1.Length) with /// <remarks> Compares Val, and the length of board1, to know whether you lost or won the game. </remarks>
   | ((0,4),_) -> Console.WriteLine "Congratulations, Champion! You succeeded in beating your incompetent opponent."
   | (_,10) -> Console.WriteLine "Sorry you lost! You didn't guess the code. Mordecai Meirowitzkl does not approve!"
               printfn "The true code was: %A" theCode
-  | _ ->  playGame (makeCode playerTwo)
+  | _ ->  playGame (makeCode playerTwo)/// <remarks> If the game is not finished you plaGame one more time. </remarks>
 /////////////////////////////////////////////////////////////////////////////////////////////
 ///                                 Play Game                                             ///
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -196,5 +206,5 @@ Console.Clear()
 printfn "Who wants to be the CODE-GUESSER?\nHuman | Computer"
 let (playerTwo : player) = checkStringPlayer (Console.ReadLine())
 
-/// <summary> Run the game with the input provided for both players </summary> 
+/// <summary> Run the game with the input provided for both players </summary>
 playGame (makeCode playerTwo)
