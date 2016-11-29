@@ -159,24 +159,6 @@ let rec validateCode (tryCode : code) (trueCode : code) (white: int) (black: int
   |x::xs when List.contains x trueCode ->  (validateCode xs trueCode (white + 1) black)
   |x::xs -> (validateCode xs trueCode white black)
 
-let rec playGame guess =
-  Console.Clear()
-  let Val = (validateCode theCode theGuess 0 0)
-  printfn "Your guess resolved to - (White, Black) : %A\n" Val
-  board1 <- ((theGuess, Val) :: board1)
-  Console.WriteLine "The board so far"
-  printfn "+-----------------------------------------+"
-  for i = (board1.Length - 1) downto 0 do
-      printfn "|%A\t|%A\t|%A\t|%A\t| | %A|"
-              ((fst board1.[i]).[0]) ((fst board1.[i]).[1])
-              ((fst board1.[i]).[2]) ((fst board1.[i]).[3])
-              (snd board1.[i])
-  printfn "+-----------------------------------------+"
-  match (Val, board1.Length) with
-  | ((0,4),_) -> Console.WriteLine "Congratulations, Champion! You succeeded in beating your incompetent opponent."
-  | (_,10) -> Console.WriteLine "Sorry you lost! You didn't guess the code. Mordecai Meirowitzkl does not approve!"
-              printfn "The true code was: %A" theCode
-  | _ ->  playGame (makeCode playerTwo)
 /////////////////////////////////////////////////////////////////////////////////////////////
 ///                                 Play Game                                             ///
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -195,6 +177,25 @@ Console.Clear()
 /// <summary> Prompt user to decide who should be the Code Guesser </summary>
 printfn "Who wants to be the CODE-GUESSER?\nHuman | Computer"
 let (playerTwo : player) = checkStringPlayer (Console.ReadLine())
+
+let rec playGame guess =
+  Console.Clear()
+  let Val = (validateCode theCode theGuess 0 0)
+  printfn "Your guess resolved to - (White, Black) : %A\n" Val
+  board1 <- ((theGuess, Val) :: board1)
+  Console.WriteLine "The board so far"
+  printfn "+-----------------------------------------+"
+  for i = (board1.Length - 1) downto 0 do
+      printfn "|%A\t|%A\t|%A\t|%A\t| | %A|"
+              ((fst board1.[i]).[0]) ((fst board1.[i]).[1])
+              ((fst board1.[i]).[2]) ((fst board1.[i]).[3])
+              (snd board1.[i])
+  printfn "+-----------------------------------------+"
+  match (Val, board1.Length) with
+  | ((0,4),_) -> Console.WriteLine "Congratulations, Champion! You succeeded in beating your incompetent opponent."
+  | (_,10) -> Console.WriteLine "Sorry you lost! You didn't guess the code. Mordecai Meirowitzkl does not approve!"
+              printfn "The true code was: %A" theCode
+  | _ ->  playGame (makeCode playerTwo)
 
 /// <summary> Run the game with the input provided for both players </summary> 
 playGame (makeCode playerTwo)
