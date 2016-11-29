@@ -164,29 +164,6 @@ let rec validateCode (tryCode : code) (trueCode : code) (white: int) (black: int
   |x::xs when List.contains x trueCode ->  (validateCode xs trueCode (white + 1) black)
   |x::xs -> (validateCode xs trueCode white black)
 
-/// <summary> Difines the board which should be printed to the console.  </summary>
-let mutable (board1 : board) = []
-/// <summary> Recursive function that plays the game, when called with  </summary>
-/// <param name = "guess"> This part maked the new theGuess, which should be compared to theCode </param>
-/// <returns> a string: Which tells you whether you lose or win. </returns>
-let rec playGame guess =
-  Console.Clear()
-  let Val = (validateCode theCode theGuess 0 0) /// <remarks> Defines the answer, to be added to the board. </remarks>
-  printfn "Your guess resolved to - (White, Black) : %A\n" Val
-  board1 <- ((theGuess, Val) :: board1)
-  Console.WriteLine "The board so far"
-  printfn "+-----------------------------------------+"
-  for i = (board1.Length - 1) downto 0 do
-      printfn "|%A\t|%A\t|%A\t|%A\t| | %A|" /// <remarks> This is the outlook of the board. </remarks>
-              ((fst board1.[i]).[0]) ((fst board1.[i]).[1])
-              ((fst board1.[i]).[2]) ((fst board1.[i]).[3])
-              (snd board1.[i])
-  printfn "+-----------------------------------------+"
-  match (Val, board1.Length) with /// <remarks> Compares Val, and the length of board1, to know whether you lost or won the game. </remarks>
-  | ((0,4),_) -> Console.WriteLine "Congratulations, Champion! You succeeded in beating your incompetent opponent."
-  | (_,10) -> Console.WriteLine "Sorry you lost! You didn't guess the code. Mordecai Meirowitzkl does not approve!"
-              printfn "The true code was: %A" theCode
-  | _ ->  playGame (makeCode playerTwo)/// <remarks> If the game is not finished you plaGame one more time. </remarks>
 /////////////////////////////////////////////////////////////////////////////////////////////
 ///                                 Play Game                                             ///
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -206,5 +183,24 @@ Console.Clear()
 printfn "Who wants to be the CODE-GUESSER?\nHuman | Computer"
 let (playerTwo : player) = checkStringPlayer (Console.ReadLine())
 
-/// <summary> Run the game with the input provided for both players </summary>
+let rec playGame guess =
+  Console.Clear()
+  let Val = (validateCode theCode theGuess 0 0) /// <remarks> Defines the answer, to be added to the board. </remarks>
+  printfn "Your guess resolved to - (White, Black) : %A\n" Val
+  board1 <- ((theGuess, Val) :: board1)
+  Console.WriteLine "The board so far"
+  printfn "+-----------------------------------------+"
+  for i = (board1.Length - 1) downto 0 do
+      printfn "|%A\t|%A\t|%A\t|%A\t| | %A|" /// <remarks> This is the outlook of the board. </remarks>
+              ((fst board1.[i]).[0]) ((fst board1.[i]).[1])
+              ((fst board1.[i]).[2]) ((fst board1.[i]).[3])
+              (snd board1.[i])
+  printfn "+-----------------------------------------+"
+  match (Val, board1.Length) with /// <remarks> Compares Val, and the length of board1, to know whether you lost or won the game. </remarks>
+  | ((0,4),_) -> Console.WriteLine "Congratulations, Champion! You succeeded in beating your incompetent opponent."
+  | (_,10) -> Console.WriteLine "Sorry you lost! You didn't guess the code. Mordecai Meirowitzkl does not approve!"
+              printfn "The true code was: %A" theCode
+  | _ ->  playGame (makeCode playerTwo)
+
+/// <summary> Run the game with the input provided for both players </summary> 
 playGame (makeCode playerTwo)
