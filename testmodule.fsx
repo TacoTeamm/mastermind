@@ -183,6 +183,10 @@ Console.Clear()
 printfn "Who wants to be the CODE-GUESSER?\nHuman | Computer"
 let (playerTwo : player) = checkStringPlayer (Console.ReadLine())
 
+/// <summary> Difines the board which should be printed to the console.  </summary>
+/// <summary> Recursive function that plays the game, when called with  </summary>
+/// <param name = "guess"> This part maked the new theGuess, which should be compared to theCode </param>
+/// <returns> a string: Which tells you whether you lose or win. </returns>
 let rec playGame guess =
   Console.Clear()
   let Val = (validateCode theCode theGuess 0 0) /// <remarks> Defines the answer, to be added to the board. </remarks>
@@ -202,5 +206,5 @@ let rec playGame guess =
               printfn "The true code was: %A" theCode
   | _ ->  playGame (makeCode playerTwo)
 
-/// <summary> Run the game with the input provided for both players </summary> 
+/// <summary> Run the game with the input provided for both players </summary>
 playGame (makeCode playerTwo)
