@@ -184,6 +184,7 @@ printfn "Who wants to be the CODE-GUESSER?\nHuman | Computer"
 let (playerTwo : player) = checkStringPlayer (Console.ReadLine())
 
 /// <summary> Difines the board which should be printed to the console.  </summary>
+let mutable (board1 : board) = []
 /// <summary> Recursive function that plays the game, when called with  </summary>
 /// <param name = "guess"> This part maked the new theGuess, which should be compared to theCode </param>
 /// <returns> a string: Which tells you whether you lose or win. </returns>
