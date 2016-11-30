@@ -160,9 +160,9 @@ let makeCode player =
 let rec validateCode (tryCode : code) (trueCode : code) (white: int) (black: int) =
   match tryCode with
   | [] -> (white, black)
-  |x::xs when x = trueCode.[(4 - (tryCode.Length))] ->  (validateCode xs trueCode white (black + 1))
-  |x::xs when List.contains x trueCode ->  (validateCode xs trueCode (white + 1) black)
-  |x::xs -> (validateCode xs trueCode white black)
+  | x::xs when x = trueCode.[(4 - (tryCode.Length))] -> (validateCode xs trueCode white (black + 1))
+  | x::xs when (List.contains x trueCode) -> (validateCode xs trueCode (white + 1) black)
+  | x::xs -> (validateCode xs trueCode white black)
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 ///                                 Play Game                                             ///
@@ -190,7 +190,7 @@ let mutable (board1 : board) = []
 /// <returns> a string: Which tells you whether you lose or win. </returns>
 let rec playGame guess =
   Console.Clear()
-  let Val = (validateCode theCode theGuess 0 0) /// <remarks> Defines the answer, to be added to the board. </remarks>
+  let (Val: answer) = (validateCode theGuess theCode 0 0) /// <remarks> Defines the answer, to be added to the board. </remarks>
   printfn "Your guess resolved to - (White, Black) : %A\n" Val
   board1 <- ((theGuess, Val) :: board1)
   Console.WriteLine "The board so far"
