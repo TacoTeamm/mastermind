@@ -4,10 +4,9 @@
 /// <remarks> Open System namespace/module </remarks>
 open System
 
-/////////////////////////////////////////////////////////////////////////////////////////////
-///                                 Type definitions                                      ///
-/////////////////////////////////////////////////////////////////////////////////////////////
-
+////////////////////
+/// Type definitions
+////////////////////
 
 /// </summary> Define types as provided in assignment </summary>
 type codeColor = Red | Green | Yellow | Purple | White | Black
@@ -16,9 +15,9 @@ type answer = int * int
 type board = (code * answer) list
 type player = Human | Computer
 
-/////////////////////////////////////////////////////////////////////////////////////////////
-///                                 Basic auxiliary functions                            ///
-/////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////
+/// Basic auxiliary functions
+/////////////////////////////
 
 /// <summary> A representative list for wrangling with possible combinations of the code-type </summary>
 let (codeColorList : code) = [Red; Green; Yellow; Purple; White; Black]
@@ -80,9 +79,9 @@ let rec listRemove i l =
     | i, x::xs -> x::listRemove (i - 1) xs
     | i, [] -> failwith "index out of range"
 
-/////////////////////////////////////////////////////////////////////////////////////////////
-///                                 Game functions/variables                              ///
-/////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////
+/// Game functions/variables
+////////////////////////////
 
 /// <summary> Strings for use when interacting with player(s) </summary>
 let playerPrompt = "Colors have to be typed in and should be one of the following: \nRed | Green | Yellow | Purple | White | Black \nYou can type like: Red or red even r\n"
@@ -167,9 +166,9 @@ let rec validateCode (tryCode : code) (trueCode : code) (white: int) (black: int
   | x::xs when (List.contains x trueCode) -> (validateCode xs trueCode (white + 1) black)
   | x::xs -> (validateCode xs trueCode white black)
 
-/////////////////////////////////////////////////////////////////////////////////////////////
-///                                 Play Game                                             ///
-/////////////////////////////////////////////////////////////////////////////////////////////
+//////////////
+/// Play Game
+//////////////
 
 /// <summary> Prompt user to decide who should be the Code Maker </summary>
 printfn "Who wants to be the CODE-MAKER?\nHuman | Computer"
@@ -177,8 +176,10 @@ let (playerOne : player) = checkStringPlayer (Console.ReadLine())
 
 /// <summary> Execute makeCode with codemaker as input </summary>
 makeCode playerOne
+
 /// <summary> Save the code as 'theCode' </summary>
 let (theCode : code) = theGuess
+
 /// <summary> Clear console so that theCode is not viewable for the code guesser </summary>
 Console.Clear()
 
@@ -188,6 +189,7 @@ let (playerTwo : player) = checkStringPlayer (Console.ReadLine())
 
 /// <summary> Defines the board which should be printed to the console.  </summary>
 let mutable (board1 : board) = []
+
 /// <summary> Recursive function that plays the game, when called with  </summary>
 /// <param name = "guess"> This part maked the new theGuess, which should be compared to theCode </param>
 /// <returns> a string: Which tells you whether you lose or win. </returns>
