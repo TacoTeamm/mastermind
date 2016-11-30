@@ -68,8 +68,8 @@ let rec checkStringPlayer consoleString =
              checkStringPlayer (Console.ReadLine())
 
 /// <summary> Removes one element from the list, so we don't get any dublicates. </summary>
-/// <param name = "i> This is the color,  </param>
-/// <param name = "list"> Takes a string, using: Console.ReadLine() </param>
+/// <param name = "i"> This is index of the color,  </param>
+/// <param name = "list"> The list, we want to remove index i from </param>
 /// <returns> A list which has been reduced by whatever's contained in "i" </returns>
 let rec listRemove i l =
     match i, l with
@@ -77,6 +77,10 @@ let rec listRemove i l =
     | i, x::xs -> x::listRemove (i - 1) xs
     | i, [] -> failwith "index out of range"
 
+/// <summary> Changes one element from the list, so we don't count a Color twice. </summary>
+/// <param name = "i"> This is the color,  </param>
+/// <param name = "list"> The list, we want to change index i to Placeholder </param>
+/// <returns> A list which the i'th element has been Changed by Placeholder </returns>
 let rec listChange i l =
     match i, l with
     | 0, x::xs -> Placeholder :: xs
